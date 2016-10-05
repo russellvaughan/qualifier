@@ -3,7 +3,7 @@ require 'Nokogiri'
 require 'JSON'
 require 'csv'
 
-
+USER_SYSTEM = %w(sign\ in log\ in LOGIN log_in Login sign\ up register Sign\ n Sign\ Up)
 
 def qualify_page(website)
 @goodfit = nil
@@ -12,7 +12,7 @@ page = HTTParty.get(website)
 @page = Nokogiri::HTML(page)
 built_with
 what_scripts
-user_system
+login
 puts 'GOOD FIT!' if @goodfit
 puts 'BAD FIT!' if @badfit
 end
@@ -27,6 +27,14 @@ end
 
 def html
 @page.xpath('//html')
+end
+
+def login
+USER_SYSTEM.each do |x|
+ (@usersystem = true) if @page.search "[text()*='"+x+"']"
+  @goodfit = true
+  end
+print "This Site has a User System\n" if @usersystem
 end
 
 def what_scripts
@@ -49,7 +57,7 @@ end
 end
 
 def built_with
-string = header.to_s
+string = header.to_s.downcase
 if string.include?('wp-content')
 print "This site is built with Wordpress\n"
 @badfit = true
@@ -60,6 +68,10 @@ print "This site is built with Wix\n"
 end
 if string.include?('squarespace')
 print "This site is built with SquareSpace\n"
+@badfit = true
+end
+if string.include?('rapidweaver')
+print "This site is built with Rapidweaver\n"
 @badfit = true
 end
 end
