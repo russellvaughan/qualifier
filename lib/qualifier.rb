@@ -4,7 +4,7 @@ require 'JSON'
 require 'csv'
 require './lib/driver'
 
-class Qualifier 
+class Qualifier
 
 USER_SYSTEM = %w(sign\ in log\ in LOGIN log_in Login sign\ up register Sign\ In Sign\ Up Log\ in Sign\ in Log\ In)
 
@@ -34,7 +34,7 @@ rescue SocketError => error
 end
    if response
     puts x
-    qualify_page(x) 
+    qualify_page(x)
     puts "\n\n"
    end
 end
@@ -46,9 +46,9 @@ def qualify_page(website)
   @badfit = nil
   page = HTTParty.get(website)
   @page = Nokogiri::HTML(page)
+  login
   built_with
   what_scripts
-  login
   puts 'This site would be a good fit for a demo!' if @goodfit
   puts 'BAD FIT!' if @badfit
 end
@@ -109,7 +109,9 @@ end
 
 def built_with
   string = header.to_s.downcase
-  if string.include?('wp-content')
+  if  @usersystem && string.include?('wp-content')
+     print "This site is built with Wordpress but has a usersystem\n"
+  elsif string.include?('wp-content')
     print "This site is built with Wordpress\n"
     @badfit = true
   end
