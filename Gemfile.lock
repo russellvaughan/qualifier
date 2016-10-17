@@ -1,7 +1,11 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    childprocess (0.5.9)
+      ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.1)
+    commonwatir (4.0.0)
+    ffi (1.9.14)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
     method_source (0.8.2)
@@ -10,12 +14,24 @@ GEM
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
+    phantomjs (2.1.1.0)
     pkg-config (1.1.7)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rubyzip (1.2.0)
+    selenium-webdriver (3.0.0)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.0)
+      websocket (~> 1.0)
     slop (3.6.0)
+    watir (5.0.0)
+      commonwatir (~> 4)
+      watir-webdriver
+    watir-webdriver (0.9.3)
+      selenium-webdriver (>= 2.46.2)
+    websocket (1.2.3)
 
 PLATFORMS
   ruby
@@ -23,7 +39,9 @@ PLATFORMS
 DEPENDENCIES
   httparty
   nokogiri
+  phantomjs (~> 2.1, >= 2.1.1.0)
   pry
+  watir (~> 5.0)
 
 BUNDLED WITH
-   1.12.5
+   1.13.1

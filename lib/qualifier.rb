@@ -2,8 +2,43 @@ require 'HTTParty'
 require 'Nokogiri'
 require 'JSON'
 require 'csv'
+require './lib/driver'
+
+class Qualifier 
 
 USER_SYSTEM = %w(sign\ in log\ in LOGIN log_in Login sign\ up register Sign\ In Sign\ Up Log\ in Sign\ in Log\ In)
+
+def initialize(website)
+    @website = website
+end
+
+def qualify
+@user_sites = Driver.new(@website).find_sites
+num = 0
+while @user_sites == [] || @user_sites.nil?
+p "#{num += 1}"
+@user_sites = Driver.new(@website).find_sites
+p @user_sites
+end
+end
+
+def qualify_user_sites
+@user_sites.each do |x|
+
+begin
+  response = HTTParty.get(x)
+rescue SocketError => error
+  puts x
+  puts "Site does not load: {error}"
+  puts "\n\n"
+end
+   if response
+    puts x
+    qualify_page(x) 
+    puts "\n\n"
+   end
+end
+end
 
 def qualify_page(website)
   @usersystem = false
@@ -37,7 +72,6 @@ def login
 
    else
    @usersystem = x
-   puts @usersystem
    @goodfit = true
   end
 
@@ -91,4 +125,6 @@ def built_with
     print "This site is built with Rapidweaver\n"
     @badfit = true
   end
+end
+
 end
